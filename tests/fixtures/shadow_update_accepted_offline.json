@@ -1,0 +1,24 @@
+{
+  "state": {
+    "reported": {
+      "status": {
+        "connected": false,
+        "lastDisconnection": 1795198147230
+      }
+    }
+  },
+  "metadata": {
+    "reported": {
+      "status": {
+        "connected": {
+          "timestamp": 1795198147
+        },
+        "lastDisconnection": {
+          "timestamp": 1795198147
+        }
+      }
+    }
+  },
+  "version": 345,
+  "timestamp": 1795198147
+}

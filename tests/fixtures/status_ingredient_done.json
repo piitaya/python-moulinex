@@ -1,0 +1,34 @@
+{
+  "mode": "ingredientCooking",
+  "currentRecipe": {
+    "title": "Lentille",
+    "functionalId": "M_FOOD_280",
+    "variant": {
+      "functionalId": "255977"
+    }
+  },
+  "currentStatus": "done",
+  "currentOperation": {
+    "parameters": [
+      {
+        "value": "1440",
+        "type": "DURATION"
+      }
+    ],
+    "program": {
+      "key": "PROGRAM_200066",
+      "name": "Cuisson basse pression"
+    }
+  },
+  "currentStep": {
+    "stepIndex": 1,
+    "functionalId": "338053",
+    "type": {
+      "key": "COOKING",
+      "name": "Cuisson"
+    }
+  },
+  "eventDate": "2026-11-20T17:46:05.000+01",
+  "version": 29,
+  "operationStart": "2026-11-20T17:46:05.000+01"
+}

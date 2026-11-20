@@ -1,0 +1,20 @@
+{
+  "mode": "manual",
+  "notification": {
+    "timeToLive": 1440,
+    "code": "30027",
+    "severity": "notif"
+  },
+  "currentStatus": "alert",
+  "progress": 6,
+  "currentOperation": {
+    "parameters": [],
+    "program": {
+      "key": "PROGRAM_200143",
+      "name": "Low Stir Fry Cooking"
+    }
+  },
+  "eventDate": "2026-11-20T17:41:30.000+01",
+  "version": 3,
+  "operationStart": "2026-11-20T17:41:29.000+01"
+}

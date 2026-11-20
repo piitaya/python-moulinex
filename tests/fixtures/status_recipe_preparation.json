@@ -1,0 +1,22 @@
+{
+  "mode": "recipe",
+  "currentRecipe": {
+    "title": "Velouté de légumes",
+    "functionalId": "1000001",
+    "variant": {
+      "functionalId": "2000001"
+    }
+  },
+  "currentStatus": "stopped",
+  "currentStep": {
+    "stepIndex": 0,
+    "functionalId": "3000000",
+    "type": {
+      "key": "PREPARATION",
+      "name": "Préparation"
+    }
+  },
+  "eventDate": "2026-11-20T17:44:09.000+01",
+  "version": 12,
+  "operationStart": "2026-11-20T17:44:08.000+01"
+}

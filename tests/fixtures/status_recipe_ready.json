@@ -1,0 +1,29 @@
+{
+  "mode": "recipe",
+  "currentRecipe": {
+    "title": "Velouté de légumes",
+    "functionalId": "1000001",
+    "variant": {
+      "functionalId": "2000001"
+    }
+  },
+  "currentStatus": "ready",
+  "currentOperation": {
+    "parameters": [],
+    "program": {
+      "key": "PROGRAM_200063",
+      "name": "Rissolage fort"
+    }
+  },
+  "currentStep": {
+    "stepIndex": 2,
+    "functionalId": "3000002",
+    "type": {
+      "key": "COOKING",
+      "name": "Cuisson"
+    }
+  },
+  "eventDate": "2026-11-20T17:44:14.000+01",
+  "version": 14,
+  "operationStart": "2026-11-20T17:44:14.000+01"
+}

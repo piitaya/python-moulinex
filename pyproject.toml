@@ -1,0 +1,172 @@
+[project]
+name = "aiomoulinex"
+version = "0.1.0"
+description = "Asynchronous Python client for the Moulinex Cookeo and Companion connected through the Groupe SEB cloud"
+authors = [{ name = "Paul Bottein", email = "paul.bottein@gmail.com" }]
+requires-python = ">=3.13,<4"
+readme = "README.md"
+license = "MIT"
+maintainers = [{ name = "Paul Bottein", email = "paul.bottein@gmail.com" }]
+keywords = ["moulinex", "cookeo", "companion", "tefal", "groupe seb", "mqtt", "asyncio"]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Framework :: AsyncIO",
+  "Intended Audience :: Developers",
+  "Natural Language :: English",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
+  "Topic :: Home Automation",
+  "Topic :: Software Development :: Libraries :: Python Modules",
+  "Typing :: Typed",
+]
+dependencies = ["aiohttp>=3.11.0", "aiomqtt>=2.5.0", "yarl>=1.18.0"]
+
+[project.urls]
+Homepage = "https://github.com/piitaya/python-moulinex"
+Repository = "https://github.com/piitaya/python-moulinex"
+Documentation = "https://github.com/piitaya/python-moulinex"
+"Bug Tracker" = "https://github.com/piitaya/python-moulinex/issues"
+Changelog = "https://github.com/piitaya/python-moulinex/releases"
+
+[dependency-groups]
+dev = [
+    "codespell==2.4.3",
+    "covdefaults==2.3.0",
+    "coverage[toml]==7.17.3",
+    "cryptography==50.0.2",
+    "mypy==2.4.1",
+    "prek==0.5.10",
+    "pre-commit-hooks==6.0.0",
+    "pylint==4.1.4",
+    "pytest==9.2.0",
+    "pytest-asyncio==1.5.0",
+    "pytest-cov==7.1.0",
+    "ruff==0.17.5",
+    "safety==3.8.1",
+    "yamllint==1.38.0",
+]
+
+[tool.uv]
+default-groups = "all"
+
+[tool.hatch.build.targets.sdist]
+include = ["src/aiomoulinex"]
+
+[tool.hatch.build.targets.wheel]
+include = ["src/aiomoulinex"]
+
+[tool.hatch.build.targets.wheel.sources]
+"src/aiomoulinex" = "aiomoulinex"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.coverage.report]
+show_missing = true
+fail_under = 90
+
+[tool.coverage.run]
+plugins = ["covdefaults"]
+source = ["aiomoulinex"]
+
+[tool.mypy]
+# Specify the target platform details in config, so your developers are
+# free to run mypy on Windows, Linux, or macOS and get consistent
+# results.
+platform = "linux"
+python_version = "3.13"
+
+# show error messages from unrelated files
+follow_imports = "normal"
+
+# suppress errors about unsatisfied imports
+ignore_missing_imports = true
+
+# be strict
+check_untyped_defs = true
+disallow_any_generics = true
+disallow_incomplete_defs = true
+disallow_subclassing_any = true
+disallow_untyped_calls = true
+disallow_untyped_decorators = true
+disallow_untyped_defs = true
+no_implicit_optional = true
+strict_optional = true
+warn_incomplete_stub = true
+warn_no_return = true
+warn_redundant_casts = true
+warn_return_any = true
+warn_unused_configs = true
+warn_unused_ignores = true
+
+[tool.pylint.MASTER]
+ignore-paths = [
+  "^tests/.*$",
+]
+
+[tool.pylint.BASIC]
+good-names = [
+  "_",
+  "ex",
+  "fp",
+  "i",
+  "id",
+  "j",
+  "k",
+  "on",
+  "Run",
+  "T",
+]
+
+[tool.pylint.DESIGN]
+max-attributes = 8
+
+[tool.pylint."MESSAGES CONTROL"]
+disable = [
+  "duplicate-code",
+  "format",
+  "unsubscriptable-object",
+  "too-many-instance-attributes",
+  "wrong-import-order",
+  "too-many-arguments",
+  "too-many-positional-arguments",
+]
+
+[tool.pylint.SIMILARITIES]
+ignore-imports = true
+
+[tool.pylint.FORMAT]
+max-line-length = 88
+
+[tool.pytest.ini_options]
+addopts = "--cov=aiomoulinex"
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+
+[tool.ruff.lint]
+ignore = [
+  "ANN401", # Opinioated warning on disallowing dynamically typed expressions
+  "COM812", # Conflicts with other rules
+  "CPY001", # Files do not carry copyright notices
+  "D203", # Conflicts with other rules
+  "D213", # Conflicts with other rules
+  "D417", # False positives in some occasions
+  "ISC001", # Conflicts with other rules
+  "PLR2004", # Just annoying, not really useful
+]
+select = ["ALL"]
+
+[tool.ruff.lint.flake8-pytest-style]
+fixture-parentheses = false
+mark-parentheses = false
+
+[tool.ruff.lint.isort]
+known-first-party = ["aiomoulinex"]
+force-sort-within-sections = true
+split-on-trailing-comma = false
+combine-as-imports = true
+
+[tool.ruff.lint.mccabe]
+max-complexity = 25

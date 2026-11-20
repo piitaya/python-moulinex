@@ -1,0 +1,130 @@
+{
+  "state": {
+    "reported": {
+      "recipe": null,
+      "nextFirmware": null,
+      "status": {
+        "synchronizing": false,
+        "unpairing": [],
+        "reset": null,
+        "updating": false,
+        "otaUpdated": false
+      },
+      "attributes": [
+        {
+          "value": "0",
+          "key": "brand"
+        },
+        {
+          "value": "0",
+          "key": "area"
+        }
+      ],
+      "firmware": {
+        "updateDate": 0,
+        "files": [
+          {
+            "type": "ui",
+            "name": "",
+            "version": "5.0.54",
+            "product": ""
+          },
+          {
+            "type": "wifi",
+            "name": "",
+            "version": "3.6.3",
+            "product": ""
+          }
+        ],
+        "priority": "low",
+        "version": ""
+      }
+    }
+  },
+  "metadata": {
+    "reported": {
+      "recipe": {
+        "timestamp": 1795197048
+      },
+      "nextFirmware": {
+        "timestamp": 1795197048
+      },
+      "status": {
+        "synchronizing": {
+          "timestamp": 1795197048
+        },
+        "unpairing": [],
+        "reset": {
+          "timestamp": 1795197048
+        },
+        "updating": {
+          "timestamp": 1795197048
+        },
+        "otaUpdated": {
+          "timestamp": 1795197048
+        }
+      },
+      "attributes": [
+        {
+          "value": {
+            "timestamp": 1795197048
+          },
+          "key": {
+            "timestamp": 1795197048
+          }
+        },
+        {
+          "value": {
+            "timestamp": 1795197048
+          },
+          "key": {
+            "timestamp": 1795197048
+          }
+        }
+      ],
+      "firmware": {
+        "updateDate": {
+          "timestamp": 1795197048
+        },
+        "files": [
+          {
+            "type": {
+              "timestamp": 1795197048
+            },
+            "name": {
+              "timestamp": 1795197048
+            },
+            "version": {
+              "timestamp": 1795197048
+            },
+            "product": {
+              "timestamp": 1795197048
+            }
+          },
+          {
+            "type": {
+              "timestamp": 1795197048
+            },
+            "name": {
+              "timestamp": 1795197048
+            },
+            "version": {
+              "timestamp": 1795197048
+            },
+            "product": {
+              "timestamp": 1795197048
+            }
+          }
+        ],
+        "priority": {
+          "timestamp": 1795197048
+        },
+        "version": {
+          "timestamp": 1795197048
+        }
+      }
+    }
+  },
+  "version": 344,
+  "timestamp": 1795197048
+}
