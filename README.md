@@ -199,7 +199,7 @@ MIT License, see [LICENSE.md](LICENSE.md).
 [build]: https://github.com/piitaya/python-moulinex/actions
 [license-shield]: https://img.shields.io/github/license/piitaya/python-moulinex.svg
 [pypi]: https://pypi.org/project/aiomoulinex/
-[python-versions-shield]: https://img.shields.io/pypi/pyversions/aiomoulinex
+[python-versions-shield]: https://img.shields.io/pypi/pyversions/aiomoulinex.svg
 [releases-shield]: https://img.shields.io/github/release/piitaya/python-moulinex.svg
 [releases]: https://github.com/piitaya/python-moulinex/releases
 [semver]: http://semver.org/spec/v2.0.0.html
