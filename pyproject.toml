@@ -1,6 +1,6 @@
 [project]
 name = "aiomoulinex"
-version = "0.1.0"
+version = "0.1.1"
 description = "Asynchronous Python client for the Moulinex Cookeo and Companion connected through the Groupe SEB cloud"
 authors = [{ name = "Paul Bottein", email = "paul.bottein@gmail.com" }]
 requires-python = ">=3.13,<4"

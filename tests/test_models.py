@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from datetime import UTC, datetime
+import re
 
 import pytest
 
@@ -68,30 +69,65 @@ def test_tokens_of_another_kind(token: str) -> None:
         _ = tokens.user_id
 
 
-def test_regions() -> None:
+# The markets where the configuration of the SEB cloud lists a Cookeo or a
+# Companion: name in the cloud, brand and market of the login, and one of the
+# languages the cloud lists for that market.
+MARKETS = [
+    (Region.MOULINEX_FR, "moulinex_fr", "MOULINEX_FR", "moulinex", "FR", "fr"),
+    (Region.TEFAL_GB, "tefal_gb", "TEFAL_GB", "tefal", "GB", "en"),
+    (Region.MOULINEX_BE, "moulinex_be", "MOULINEX_BE", "moulinex", "BE", "fr"),
+    (Region.KRUPS_DE, "krups_de", "KRUPS_DE", "krups", "DE", "de"),
+    (Region.MOULINEX_IT, "moulinex_it", "MOULINEX_IT", "moulinex", "IT", "it"),
+    (Region.MOULINEX_ES, "moulinex_es", "MOULINEX_ES", "moulinex", "ES", "es"),
+    (Region.MOULINEX_PT, "moulinex_pt", "MOULINEX_PT", "moulinex", "PT", "ptPT"),
+    (Region.MOULINEX_CH, "moulinex_ch", "MOULINEX_CH", "moulinex", "CH", "de"),
+    (Region.MOULINEX_DZ, "moulinex_dz", "MOULINEX_DZ", "moulinex", "DZ", "fr"),
+    (Region.MOULINEX_AE, "moulinex_ae", "MOULINEX_AE", "moulinex", "AE", "enUS"),
+    (Region.TEFAL_PL, "tefal_pl", "TEFAL_PL", "tefal", "PL", "pl"),
+    (Region.TEFAL_AU, "tefal_au", "TEFAL_AU", "tefal", "AU", "enUS"),
+    (Region.TEFAL_UA, "tefal_ua", "TEFAL_UA", "tefal", "UA", "uk"),
+    (Region.TEFAL_RU, "tefal_ru", "TEFAL_RU", "tefal", "RU", "ru"),
+    (Region.TEFAL_HU, "tefal_hu", "TEFAL_HU", "tefal", "HU", "hu"),
+    (Region.TEFAL_CZ, "tefal_cz", "TEFAL_CZ", "tefal", "CZ", "cs"),
+    (Region.TEFAL_SK, "tefal_sk", "TEFAL_SK", "tefal", "SK", "sk"),
+    (Region.TEFAL_BG, "tefal_bg", "TEFAL_BG", "tefal", "BG", "bg"),
+    (Region.TEFAL_RO, "tefal_ro", "TEFAL_RO", "tefal", "RO", "ro"),
+    (Region.KRUPS_MX, "krups_mx", "KRUPS_MX", "krups", "MX", "es"),
+    (Region.TFAL_JP, "tfal_jp", "T-FAL_JP", "tfal", "JP", "ja"),
+]
+
+
+def test_regions_are_all_the_markets() -> None:
+    """Test that every region is checked below, in the order they are listed."""
+    assert list(Region) == [market[0] for market in MARKETS]
+    assert all(re.fullmatch(r"[a-z]+_[a-z]{2}", region.value) for region in Region)
+
+
+@pytest.mark.parametrize(
+    ("region", "value", "perimeter", "brand", "market", "language"), MARKETS
+)
+def test_region(
+    region: Region, value: str, perimeter: str, brand: str, market: str, language: str
+) -> None:
     """Test what the login page and the cloud need to know about a region."""
-    assert [region.value for region in Region] == [
-        "moulinex_fr",
-        "tefal_gb",
-        "moulinex_be",
-        "krups_de",
-        "moulinex_it",
-        "moulinex_es",
-    ]
-    assert [region.profile_perimeter for region in Region] == [
-        "MOULINEX_FR",
-        "TEFAL_GB",
-        "MOULINEX_BE",
-        "KRUPS_DE",
-        "MOULINEX_IT",
-        "MOULINEX_ES",
-    ]
-    germany = Region.KRUPS_DE
-    assert (germany.brand, germany.market, germany.language) == ("krups", "DE", "de")
-    region = Region("tefal_gb")
-    assert (region.brand, region.market, region.language) == ("tefal", "GB", "en")
-    assert region.profile_perimeter == "TEFAL_GB"
-    assert all(region.language for region in Region)
+    assert region.value == value
+    assert Region(value) is region
+    assert region.profile_perimeter == perimeter
+    assert (region.brand, region.market, region.language) == (brand, market, language)
+
+
+def test_brand_names() -> None:
+    """Test the name of the brand of a region, as the brand writes it."""
+    assert Region.MOULINEX_FR.brand_name == "Moulinex"
+    assert Region.TEFAL_GB.brand_name == "Tefal"
+    assert Region.KRUPS_DE.brand_name == "Krups"
+    assert Region.TFAL_JP.brand_name == "T-fal"
+    assert {region.brand_name for region in Region} == {
+        "Moulinex",
+        "Tefal",
+        "Krups",
+        "T-fal",
+    }
 
 
 def test_appliance_topics() -> None:
