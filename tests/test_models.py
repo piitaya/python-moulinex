@@ -200,6 +200,7 @@ def test_profile_defaults() -> None:
     profile = Profile.from_json({"household": {"products": [product]}})
     assert profile.appliances == (Appliance("Cookeo", "COO001", "uuid", "1510002402"),)
     assert profile.appliances[0].model is None
+    assert profile.appliances[0].catalog_id is None
     del product["cmmf"]
     profile = Profile.from_json({"household": {"products": [product]}})
     assert profile.appliances[0].cmmf is None
@@ -252,6 +253,8 @@ def test_profile_models(
     (parsed,) = Profile.from_json(payload).appliances
     assert parsed.model == model
     assert parsed.name == "Mine"
+    # The identifier is kept as it is, even for a model that is not known.
+    assert parsed.catalog_id == (appliance if isinstance(appliance, str) else None)
 
 
 def test_catalog() -> None:

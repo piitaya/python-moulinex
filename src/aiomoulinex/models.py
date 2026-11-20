@@ -166,6 +166,7 @@ class Appliance:
     cmmf: str | None = None
     domain: str = COOKEO_DOMAIN
     model: str | None = None
+    catalog_id: str | None = None
 
     @property
     def programs(self) -> tuple[str, ...]:
@@ -458,6 +459,7 @@ class Profile:
                     model=_model(
                         product.get("appliance"), payload.get("profilePerimeter")
                     ),
+                    catalog_id=_text(product.get("appliance")),
                 )
                 for product in (payload.get("household") or {}).get("products") or []
                 if product.get("iot")

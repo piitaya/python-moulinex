@@ -33,6 +33,7 @@ COOKEO = Appliance(
     thing_uuid="11111111-2222-3333-4444-555555555555",
     cmmf="1510002402",
     model="Cookeo Touch Wifi",
+    catalog_id="APPLIANCE_1090",
 )
 COMPANION = Appliance(
     name="i-Companion Touch XL",
@@ -41,6 +42,7 @@ COMPANION = Appliance(
     cmmf="8000036990",
     domain="PRO_COM",
     model="i-Companion Touch / Touch Pro",
+    catalog_id="APPLIANCE_1091",
 )
 
 
