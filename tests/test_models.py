@@ -25,6 +25,7 @@ from aiomoulinex import (
     Tokens,
     TokensUpdated,
 )
+from aiomoulinex.catalog import MODELS
 
 from .conftest import COMPANION, COOKEO, load_fixture
 from .fake_cloud import USER_ID, id_token
@@ -198,12 +199,79 @@ def test_profile_defaults() -> None:
     }
     profile = Profile.from_json({"household": {"products": [product]}})
     assert profile.appliances == (Appliance("Cookeo", "COO001", "uuid", "1510002402"),)
+    assert profile.appliances[0].model is None
     del product["cmmf"]
     profile = Profile.from_json({"household": {"products": [product]}})
     assert profile.appliances[0].cmmf is None
     product["domains"] = ["PRO_COM"]
     profile = Profile.from_json({"household": {"products": [product]}})
     assert profile.appliances[0].name == "Companion"
+
+
+def product(appliance: object) -> dict[str, object]:
+    """Return a product of a profile, with its identifier in the catalog."""
+    return {
+        "name": "Mine",
+        "appliance": appliance,
+        "domains": ["PRO_COO"],
+        "iot": {"thingType": "COO001", "functionalId": "uuid"},
+    }
+
+
+@pytest.mark.parametrize(
+    ("appliance", "perimeter", "model"),
+    [
+        ("APPLIANCE_1090", "MOULINEX_FR", "Cookeo Touch Wifi"),
+        ("APPLIANCE_1090", "MOULINEX_PT", "Cookeo Touch Wifi"),
+        # One name for a brand, however its markets write it.
+        ("APPLIANCE_1090", "TEFAL_GB", "Cook4Me Touch"),
+        ("APPLIANCE_1090", "TEFAL_AU", "Cook4Me Touch"),
+        ("APPLIANCE_1090", "TEFAL_PL", "Cook4Me Touch"),
+        ("APPLIANCE_1090", "KRUPS_DE", "Cook4Me Touch Wifi"),
+        ("APPLIANCE_1108", "T-FAL_JP", "クックフォーミー タッチ 3L"),
+        ("APPLIANCE_1091", "MOULINEX_PT", "i-Companion Touch / Touch Pro"),
+        ("APPLIANCE_1091", "TEFAL_PL", "i-Companion Touch"),
+        # Not sold by that brand, or in a market that is not known.
+        ("APPLIANCE_1195", "TEFAL_GB", "Cookeo 9IN1"),
+        ("APPLIANCE_1091", "KRUPS_MX", "i-Companion Touch / Touch Pro"),
+        ("APPLIANCE_1232", "SEB_XX", "Cookeo Infinity Autostir"),
+        ("APPLIANCE_1232", None, "Cookeo Infinity Autostir"),
+        ("APPLIANCE_9999", "MOULINEX_FR", None),
+        (None, "MOULINEX_FR", None),
+        (1090, "MOULINEX_FR", None),
+    ],
+)
+def test_profile_models(
+    appliance: object, perimeter: str | None, model: str | None
+) -> None:
+    """Test the name of the model of an appliance, which depends on the brand."""
+    payload = {
+        "profilePerimeter": perimeter,
+        "household": {"products": [product(appliance)]},
+    }
+    (parsed,) = Profile.from_json(payload).appliances
+    assert parsed.model == model
+    assert parsed.name == "Mine"
+
+
+def test_catalog() -> None:
+    """Test that the catalog holds the appliances that connect to the cloud."""
+    assert sorted(MODELS) == [
+        "APPLIANCE_1090",
+        "APPLIANCE_1091",
+        "APPLIANCE_1108",
+        "APPLIANCE_1129",
+        "APPLIANCE_1195",
+        "APPLIANCE_1208",
+        "APPLIANCE_1226",
+        "APPLIANCE_1227",
+        "APPLIANCE_1232",
+    ]
+    brands = {region.brand for region in Region}
+    for names in MODELS.values():
+        assert names
+        assert set(names) <= brands
+        assert all(names.values())
 
 
 def test_status_idle() -> None:

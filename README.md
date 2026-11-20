@@ -94,7 +94,7 @@ async def main(tokens: Tokens) -> None:
 
 `connect()` refreshes the tokens, reads the appliances of the account, connects to the cloud and asks each appliance for its state. It returns once that state is known: the shadow of each appliance, and the cooking status of those that are turned on. An appliance that does not answer within 3 seconds is not waited for any longer. From then on:
 
-- `client.appliances` holds the appliances of the account, by `thing_uuid`.
+- `client.appliances` holds the appliances of the account, by `thing_uuid`. An `Appliance` has the `name` its owner gave it in the app, and its `model`: the name of the product for the brand of the account, such as `Cookeo Touch Wifi` for Moulinex or `Cook4Me Touch` for Tefal.
 - `client.states` holds the last known `ApplianceState` of each appliance. Its `status` is what the appliance is cooking, its `shadow` tells whether it is turned on and which firmware it runs.
 - `client.connected` is `False` while the connection is lost. The client keeps trying to connect again, and `client.states` keeps the last known state.
 - `client.error` is why the client is not connected, if that is known.

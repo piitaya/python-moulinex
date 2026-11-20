@@ -11,9 +11,11 @@ import json
 import re
 from typing import TYPE_CHECKING, Any, Self
 
+from .catalog import MODELS
 from .const import COMPANION_DOMAIN, COOKEO_DOMAIN
 from .exceptions import MoulinexError
 from .programs import PROGRAMS
+from .regions import Region
 
 if TYPE_CHECKING:
     from _typeshed import DataclassInstance
@@ -163,6 +165,7 @@ class Appliance:
     thing_uuid: str
     cmmf: str | None = None
     domain: str = COOKEO_DOMAIN
+    model: str | None = None
 
     @property
     def programs(self) -> tuple[str, ...]:
@@ -338,6 +341,20 @@ class CookingStatus:
         )
 
 
+def _model(identifier: Any, perimeter: Any) -> str | None:
+    """Return the name of a model, as the brand of the account calls it.
+
+    A model that the brand does not sell gets the name of another brand.
+    """
+    names = MODELS.get(identifier) if isinstance(identifier, str) else None
+    if not names:
+        return None
+    region = next((r for r in Region if r.profile_perimeter == perimeter), None)
+    if region is not None and region.brand in names:
+        return names[region.brand]
+    return next(iter(names.values()))
+
+
 def _mapping(value: Any) -> dict[str, Any]:
     """Return an object of a message, empty when it is something else."""
     return value if isinstance(value, dict) else {}
@@ -438,6 +455,9 @@ class Profile:
                         else None
                     ),
                     domain=domain,
+                    model=_model(
+                        product.get("appliance"), payload.get("profilePerimeter")
+                    ),
                 )
                 for product in (payload.get("household") or {}).get("products") or []
                 if product.get("iot")

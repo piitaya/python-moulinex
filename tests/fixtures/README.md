@@ -18,4 +18,4 @@ Not captured yet: a pressure cooking with its countdown (`remainingTime`), `depr
 
 Written by hand:
 
-- `profile_two_appliances.json`: `profile.json` with a Companion, a Cookeo that is not connected and an appliance of another kind added. The identifiers of the Companion are made up.
+- `profile_two_appliances.json`: `profile.json` with a Companion, a Cookeo that is not connected and an appliance of another kind added. The Companion has its real kind and catalog identifier, the rest of its identifiers is made up.
