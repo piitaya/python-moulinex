@@ -25,7 +25,7 @@ from aiomoulinex import (
     Tokens,
     TokensUpdated,
 )
-from aiomoulinex.catalog import MODELS
+from aiomoulinex.catalog import COUNTRIES, MODELS
 
 from .conftest import COMPANION, COOKEO, load_fixture
 from .fake_cloud import USER_ID, id_token
@@ -115,6 +115,37 @@ def test_region(
     assert Region(value) is region
     assert region.profile_perimeter == perimeter
     assert (region.brand, region.market, region.language) == (brand, market, language)
+
+
+def test_countries() -> None:
+    """Test the region of a country, for the selector of a country."""
+    assert Region.for_country("FR") == (Region.MOULINEX_FR,)
+    assert Region.for_country("lu") == (Region.MOULINEX_BE,)
+    assert Region.for_country("AT") == (Region.KRUPS_DE,)
+    assert Region.for_country("IE") == (Region.TEFAL_GB,)
+    assert Region.for_country("NZ") == (Region.TEFAL_AU,)
+    assert Region.for_country("JP") == (Region.TFAL_JP,)
+    assert Region.for_country("CH") == (
+        Region.MOULINEX_CH,
+        Region.MOULINEX_FR,
+        Region.KRUPS_DE,
+        Region.MOULINEX_IT,
+    )
+    assert Region.for_country("US") == ()
+    assert Region.for_country("") == ()
+
+    assert Region.MOULINEX_BE.countries == ("BE", "LU")
+    assert Region.KRUPS_DE.countries == ("DE", "AT", "CH")
+    assert Region.MOULINEX_FR.countries == ("FR", "CH")
+    assert len(COUNTRIES) == 39
+    assert list(COUNTRIES) == sorted(COUNTRIES)
+    for region in Region:
+        # Every region can be reached, first from the country of its market.
+        assert region.countries[0] == region.market
+        assert Region.for_country(region.market)[0] is region
+    assert all(re.fullmatch(r"[A-Z]{2}", country) for country in COUNTRIES)
+    assert [c for c, regions in COUNTRIES.items() if len(regions) > 1] == ["CH"]
+    assert {Region(v) for values in COUNTRIES.values() for v in values} == set(Region)
 
 
 def test_brand_names() -> None:

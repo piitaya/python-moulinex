@@ -2,6 +2,7 @@
 
 from .api import attach_policies, fetch_profile
 from .auth import login, refresh
+from .catalog import COUNTRIES
 from .client import MoulinexClient
 from .cognito import fetch_credentials
 from .const import COMPANION_DOMAIN, COOKEO_DOMAIN
@@ -45,6 +46,7 @@ __all__ = [
     "COMPANION_PROGRAMS",
     "COOKEO_DOMAIN",
     "COOKEO_PROGRAMS",
+    "COUNTRIES",
     "PROGRAMS",
     "Appliance",
     "ApplianceAdded",

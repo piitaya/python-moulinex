@@ -3,6 +3,9 @@
 from __future__ import annotations
 
 from enum import StrEnum
+from typing import Self
+
+from .catalog import COUNTRIES
 
 
 class Region(StrEnum):
@@ -32,6 +35,22 @@ class Region(StrEnum):
     TEFAL_RO = "tefal_ro"
     KRUPS_MX = "krups_mx"
     TFAL_JP = "tfal_jp"
+
+    @classmethod
+    def for_country(cls, country: str) -> tuple[Self, ...]:
+        """Return the regions of a country, from its code of two letters.
+
+        There is none for a country no region serves, and one for every other
+        country but Switzerland: an account from there belongs to the region
+        of its brand and language. The region of the country itself comes first.
+        """
+        return tuple(cls(region) for region in COUNTRIES.get(country.upper(), ()))
+
+    @property
+    def countries(self) -> tuple[str, ...]:
+        """Return the codes of the countries of the region, its own one first."""
+        served = [c for c, regions in COUNTRIES.items() if self.value in regions]
+        return tuple(sorted(served, key=lambda country: country != self.market))
 
     @property
     def brand(self) -> str:

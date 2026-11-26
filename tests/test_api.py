@@ -17,6 +17,7 @@ from aiomoulinex import (
     fetch_credentials,
     fetch_profile,
 )
+from aiomoulinex.const import SEB_API_KEYS
 
 from .conftest import COMPANION, COOKEO, load_fixture
 from .fake_cloud import ACCESS_KEY, SECRET_KEY, SESSION_TOKEN, id_token
@@ -252,3 +253,29 @@ async def test_closed_session(cloud: FakeCloud) -> None:  # noqa: ARG001
         await attach_policies(session, "id-token", "COO001")
     with pytest.raises(MoulinexConnectionError, match="closed"):
         await fetch_credentials(session, id_token())
+
+
+async def test_fetch_profile_uses_the_key_of_the_brand(
+    cloud: FakeCloud, session: aiohttp.ClientSession
+) -> None:
+    """Test that each brand has its key, which gives all its kinds of appliances."""
+    for region in (
+        Region.MOULINEX_FR,
+        Region.MOULINEX_CH,
+        Region.TEFAL_GB,
+        Region.KRUPS_MX,
+        Region.TFAL_JP,
+    ):
+        await fetch_profile(session, cloud.access_token, region)
+
+    assert cloud.profile_perimeters == [
+        "MOULINEX_FR",
+        "MOULINEX_CH",
+        "TEFAL_GB",
+        "KRUPS_MX",
+        "T-FAL_JP",
+    ]
+    moulinex, switzerland, tefal, krups, tfal = cloud.profile_keys
+    assert moulinex == switzerland
+    assert len({moulinex, tefal, krups, tfal}) == 4
+    assert set(SEB_API_KEYS) == {region.brand for region in Region}

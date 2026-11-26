@@ -7,7 +7,13 @@ from typing import TYPE_CHECKING, Any
 import aiohttp
 
 from ._http import own_session, read_json, read_text, status_error, wrap_errors
-from .const import DEFAULT_TIMEOUT, SEB_API_BASE, SEB_API_KEY, SEB_IOT_BASE
+from .const import (
+    DEFAULT_TIMEOUT,
+    SEB_API_BASE,
+    SEB_API_KEY,
+    SEB_API_KEYS,
+    SEB_IOT_BASE,
+)
 from .exceptions import MoulinexError
 from .models import Profile
 
@@ -20,32 +26,27 @@ _TIMEOUT = aiohttp.ClientTimeout(total=DEFAULT_TIMEOUT)
 async def fetch_profile(
     session: aiohttp.ClientSession, access_token: str, region: Region
 ) -> Profile:
-    """Fetch the profile of the account, including its appliances.
+    """Fetch the profile of the account in a region, including its appliances.
+
+    An account has one profile for each region. The SEB cloud creates an empty
+    one when it is asked for a region the account never used: a region that is
+    not the one of the account gives no appliances, and no error.
 
     Raises:
         MoulinexAuthenticationError: The access token is refused or expired.
         MoulinexConnectionError: The SEB cloud could not be reached.
 
     """
-    return await fetch_profile_of_perimeter(
-        session, access_token, region.profile_perimeter
-    )
-
-
-async def fetch_profile_of_perimeter(
-    session: aiohttp.ClientSession, access_token: str, profile_perimeter: str
-) -> Profile:
-    """Fetch the profile of the account from the name of its region in the cloud."""
     with wrap_errors("Fetching the profile"):
         async with (
             own_session(session) as own,
             own.get(
                 f"{SEB_API_BASE}/common-api/profiles/me",
                 headers={
-                    "ApiKey": SEB_API_KEY,
+                    "ApiKey": SEB_API_KEYS[region.brand],
                     "Authorization": f"Bearer {access_token}",
                     "Grant-Type": "RCUToken",
-                    "DCP-Context": profile_perimeter,
+                    "DCP-Context": region.profile_perimeter,
                     "Accept": "application/json",
                 },
                 timeout=_TIMEOUT,
