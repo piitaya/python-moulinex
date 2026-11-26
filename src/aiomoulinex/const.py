@@ -7,6 +7,13 @@ SF_REDIRECT_URI = "gsmoduser://tokens"
 SEB_API_BASE = "https://sebplatform.api.groupe-seb.com"
 SEB_IOT_BASE = "https://iot.api.groupe-seb.com"
 SEB_API_KEY = "GtPU4am4rpf83Zptq4xahtJsEytbrvKP"
+# Key of the app of each brand: it gives every kind of appliance, in all its markets.
+SEB_API_KEYS = {
+    "moulinex": "tLQ6PasWAb4didcWJT6ufYybl4IJh54p",
+    "tefal": "d8f3706f1d5c65ac2a44c9b8ab4ad67e",
+    "krups": "460d1bd232b95f5aa04a60b07bdca353",
+    "tfal": "3cd7c7653c09ff0496ab94284b31cd5b",
+}
 COOKEO_DOMAIN = "PRO_COO"
 COMPANION_DOMAIN = "PRO_COM"
 

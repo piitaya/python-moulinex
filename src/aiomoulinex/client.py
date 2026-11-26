@@ -16,7 +16,7 @@ from typing import TYPE_CHECKING, Any, Self
 import aiomqtt
 
 from . import const
-from .api import attach_policies, fetch_profile_of_perimeter
+from .api import attach_policies, fetch_profile
 from .auth import refresh
 from .cognito import fetch_credentials
 from .events import (
@@ -35,6 +35,7 @@ from .exceptions import (
     MoulinexError,
 )
 from .models import ApplianceShadow, ApplianceState, CookingStatus
+from .regions import Region
 from .signing import signed_mqtt_path
 
 if TYPE_CHECKING:
@@ -44,7 +45,6 @@ if TYPE_CHECKING:
     import aiohttp
 
     from .models import Appliance, AwsCredentials, Tokens
-    from .regions import Region
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -77,7 +77,7 @@ class MoulinexClient:
         """
         self._session = session
         self._tokens = tokens
-        self._perimeter = region.profile_perimeter
+        self._region = Region(region)
         self._ssl_context = ssl_context
         self._timeout = timeout
         # AWS IoT needs a distinct client id for each connection of an identity.
@@ -327,10 +327,9 @@ class MoulinexClient:
 
     async def _load_appliances(self) -> None:
         """Read the appliances of the account, and tell which ones changed."""
-        profile = await fetch_profile_of_perimeter(
-            self._session, self._tokens.access_token, self._perimeter
+        profile = await fetch_profile(
+            self._session, self._tokens.access_token, self._region
         )
-        self._perimeter = profile.profile_perimeter or self._perimeter
         appliances = {
             appliance.thing_uuid: appliance for appliance in profile.appliances
         }

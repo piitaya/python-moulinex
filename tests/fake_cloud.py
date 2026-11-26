@@ -169,6 +169,7 @@ class FakeCloud:
         self.login_forms: list[dict[str, str]] = []
         self.token_requests = 0
         self.profile_perimeters: list[str] = []
+        self.profile_keys: list[str] = []
         self.policies: list[dict[str, str]] = []
         self.cognito_calls: list[tuple[str, dict[str, Any]]] = []
         self.published: list[tuple[str, bytes]] = []
@@ -349,6 +350,7 @@ class FakeCloud:
 
     async def _profile(self, request: web.Request) -> web.Response:
         self.profile_perimeters.append(request.headers["DCP-Context"])
+        self.profile_keys.append(request.headers["ApiKey"])
         assert request.headers["Grant-Type"] == "RCUToken"
         assert request.headers["ApiKey"]
         if request.headers["Authorization"] != f"Bearer {self.access_token}":

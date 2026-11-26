@@ -160,6 +160,12 @@ async def test_default_ssl_context(
     assert created == [True]
 
 
+async def test_unknown_region(session: aiohttp.ClientSession) -> None:
+    """Test a region the library does not know is refused at once."""
+    with pytest.raises(ValueError, match="nowhere"):
+        MoulinexClient(session, tokens(), "nowhere")  # type: ignore[arg-type]
+
+
 async def test_two_appliances(cloud: FakeCloud, client: MoulinexClient) -> None:
     """Test following a Cookeo and a Companion with one connection."""
     cloud.profile = load_fixture("profile_two_appliances.json")

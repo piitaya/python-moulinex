@@ -58,7 +58,7 @@ async with aiohttp.ClientSession() as session:
         print(err.reason)  # invalid_auth, email_not_verified, account_locked, ...
 ```
 
-`Region` is the brand and country of the account, the one picked in the Moulinex app. The library only uses the connections of the session it is given: the cookies of the cloud stay out of it, so it is safe to pass a session that is shared with other code.
+`Region` is the brand and market of the account. `Region.for_country("FR")` gives the regions of a country, and `COUNTRIES` lists the countries it knows. Every country has one region but Switzerland, where the Moulinex app also asks for a language: tell its regions apart with their `language` and `brand_name`. The library only uses the connections of the session it is given: the cookies of the cloud stay out of it, so it is safe to pass a session that is shared with other code.
 
 Store `tokens.to_dict()` and the region, not the password. `Tokens.from_dict()` reads them back, and `tokens.user_id` identifies the account: it stays the same when the email changes.
 
